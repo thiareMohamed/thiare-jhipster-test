@@ -41,7 +41,6 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    @Autowired
     @Lazy
     private MailService self;
 
@@ -49,25 +48,18 @@ public class MailService {
         JHipsterProperties jHipsterProperties,
         JavaMailSender javaMailSender,
         MessageSource messageSource,
-        SpringTemplateEngine templateEngine
+        SpringTemplateEngine templateEngine,
+        MailService self
     ) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+        this.self = self;
     }
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug(
-            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart,
-            isHtml,
-            to,
-            subject,
-            content
-        );
-
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
@@ -86,7 +78,6 @@ public class MailService {
     @Async
     public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
         if (user.getEmail() == null) {
-            log.debug("Email doesn't exist for user '{}'", user.getLogin());
             return;
         }
         Locale locale = Locale.forLanguageTag(user.getLangKey());
@@ -100,19 +91,16 @@ public class MailService {
 
     @Async
     public void sendActivationEmail(User user) {
-        log.debug("Sending activation email to '{}'", user.getEmail());
         self.sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
     }
 
     @Async
     public void sendCreationEmail(User user) {
-        log.debug("Sending creation email to '{}'", user.getEmail());
         self.sendEmailFromTemplate(user, "mail/creationEmail", "email.activation.title");
     }
 
     @Async
     public void sendPasswordResetMail(User user) {
-        log.debug("Sending password reset email to '{}'", user.getEmail());
         self.sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
     }
 }
