@@ -1,6 +1,8 @@
 # thiarejhipstertest
-
 This application was generated using JHipster 8.0.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.0.0](https://www.jhipster.tech/documentation-archive/v8.0.0).
+## SonarCloud Quality Gate
+<img width="1666" alt="Screenshot 2023-12-06 at 18 47 03" src="https://github.com/thiareMohamed/thiare-jhipster-test/assets/92308305/9920a9af-f03f-4ce3-9cde-734c69909319">
+
 
 ## Project Structure
 
